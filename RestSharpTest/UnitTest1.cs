@@ -116,5 +116,18 @@ namespace RestSharpTest
             Console.WriteLine(response.Content);
 
         }
+
+        [TestMethod]
+        public void DeleteEmployeeDataFromJSONServer()
+        {
+            RestRequest request = new RestRequest("employees/13", Method.DELETE);
+
+            IRestResponse response = restClient.Execute(request);
+
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+
+            Console.WriteLine(response.Content);
+
+        }
     }
 }
