@@ -65,6 +65,31 @@ namespace RestSharpTest
         /// TC2 Add a new Employee data into JSON server
         /// </summary>
         //[TestMethod]
+        [TestMethod]
+        public void AddaEmployeeIntoJSONServer()
+        {
+            RestRequest request = new RestRequest("/employees", Method.POST);
 
+            //Creating new Emp Json data for adding into server
+            JObject jObject = new JObject();
+            jObject.Add("name", "Kunal");
+            jObject.Add("salary", "20000");
+
+            request.AddParameter("application/json", jObject, ParameterType.RequestBody);
+
+            IRestResponse response = restClient.Execute(request);
+
+            //StatusCode for Adding data is 201
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.Created);
+
+            EmployeePayroll employees = JsonConvert.DeserializeObject<EmployeePayroll>(response.Content);
+
+            Assert.AreEqual("Kunal", employees.name);
+
+            Assert.AreEqual("20000", employees.salary);
+
+            Console.WriteLine(response.Content);
+
+        }
     }
 }
