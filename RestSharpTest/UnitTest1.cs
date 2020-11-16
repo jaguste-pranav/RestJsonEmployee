@@ -73,7 +73,7 @@ namespace RestSharpTest
             //Creating new Emp Json data for adding into server
             JObject jObject = new JObject();
             jObject.Add("name", "Kunal");
-            jObject.Add("salary", "20000");
+            jObject.Add("Salary", "20000");
 
             request.AddParameter("application/json", jObject, ParameterType.RequestBody);
 
@@ -87,6 +87,31 @@ namespace RestSharpTest
             Assert.AreEqual("Kunal", employees.name);
 
             Assert.AreEqual("20000", employees.salary);
+
+            Console.WriteLine(response.Content);
+
+        }
+
+        [TestMethod]
+        public void UpdateSalaryIntoJSONServer()
+        {
+            RestRequest request = new RestRequest("/employees/11", Method.PUT);
+
+            JObject jObject = new JObject();
+            jObject.Add("name", "Tanmay");
+            jObject.Add("salary", "30000");
+
+            request.AddParameter("application/json", jObject, ParameterType.RequestBody);
+
+            IRestResponse response = restClient.Execute(request);
+
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+
+            EmployeePayroll employee = JsonConvert.DeserializeObject<EmployeePayroll>(response.Content);
+
+            Assert.AreEqual("Tanmay", employee.name);
+
+            Assert.AreEqual("30000", employee.salary);
 
             Console.WriteLine(response.Content);
 
